@@ -1,6 +1,8 @@
+from cgi import test
 from jinja2 import Environment, FileSystemLoader #importaciones 
+from model.test import con
 
-variable = "HOLA MUNDO!"
+variable = "HOLA MUNDO!!"
 
 fileloader = FileSystemLoader("templates") #variable que almacena la carpeta de la plantilla
 
@@ -18,3 +20,4 @@ filename= "index.html"
 #with open(f"E:/{filename}","w") as f:
 with open(f"./site/{filename}","w") as f:
     f.write(rendered)
+
