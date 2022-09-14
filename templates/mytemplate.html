@@ -1,12 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ titulo }}</title>
+    <title></title>
 </head>
 <body>
-    {{ v }}
+    <div>
+        <table border="1" style="text-align:center">
+            <caption>Personal</caption>
+            <thead>
+                <tr>
+                    <th>Cargo</th>
+                    <th>N&uacute;mero</th>                
+                </tr>
+            </thead>
+            <tbody>
+                
+                    <tr>
+                        <td>&nbsp;Polic&iacute;a/s&nbsp;</td>
+                        <td>{{ personal[0] }}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Oficial/es&nbsp;</td>
+                        <td>{{ personal[1] }}</td>                   
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Subinspector/es&nbsp;</td>
+                        <td>{{ personal[2] }}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Inspector/es&nbsp;</td>
+                        <td>{{ personal[3] }}</td>                   
+                    </tr>
+                    <tr>
+                        <td>&nbsp;Intendente&nbsp;</td>
+                        <td>{{ personal[4] }}</td>
+                    </tr>                
+            </tbody>        
+        </table>
+    </div>
+
+    <div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Agente</th>
+                    <th>Cargo</th>
+                    <th>Fecha</th>
+                    <th>Turno</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in lista %}
+                    <tr>
+                        <td>{{ item[0] }}</td>
+                        <td>{{ item[1] }}</td>
+                        <td>{{ item[2] }}</td>
+                        <td>{{ item[3] }}</td>
+                    </tr>
+                {% endfor %}
+    
+            </tbody>
+    
+            
+        </table>
+    </div>
+    
 </body>
 </html>
