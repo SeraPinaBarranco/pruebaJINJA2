@@ -7,12 +7,18 @@ npolicias= 0
 noficiales= 0
 
 m= 0
+m5=0
 t=0
+c=0
+b=0
+l=0
+ap=0
+n=0
+v=0
 policias= {'Policias': 
             [
                 {
-                    'Mañana': 5,
-                    'Tarde':8
+                    
                 } 
             ] 
         }
@@ -26,10 +32,27 @@ for i in listado:
         if(i[2] == 'M'):
             m+=1
             policias['Policias'][0]['Mañana'] = m
+        if(i[2] == 'M2'):
+            m5+=1
+            policias['Policias'][0]['Mañana5-2'] = m5
         if(i[2] == 'T'):           
             t+=1
             policias['Policias'][0]['Tarde'] = t
-    
+        if(i[2] == 'CIF' or  i[2] == 'CBO' or  i[2] == 'CPA'):           
+            c+=1
+            policias['Policias'][0]['Convenio'] = c        
+        if(i[2] == 'L'):           
+            l+=1
+            policias['Policias'][0]['Libre'] = l
+        if(i[2] == 'AP' or i[2] == 'AP-'):           
+            ap+=1
+            policias['Policias'][0]['Asuntos propios'] = ap
+        if(i[2] == 'V'):           
+            v+=1
+            policias['Policias'][0]['Vacaciones'] = v
+        if(i[2] == 'B' or i[2] == 'AP-'):           
+            b+=1
+            policias['Policias'][0]['Baja'] = b
     if(i[0]== '2'):
         noficiales +=1
   
