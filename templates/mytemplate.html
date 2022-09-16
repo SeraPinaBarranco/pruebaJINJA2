@@ -44,23 +44,34 @@
 
     <div>
         <table border="1">
+            <caption>Policias</caption>
             <thead>
                 <tr>
-                    <th>Agente</th>
-                    <th>Cargo</th>
-                    <th>Fecha</th>
-                    <th>Turno</th>
+                    <th>Situacion</th>
+                    <th>Cantidad</th>                  
                 </tr>
             </thead>
             <tbody>
-                {% for item in lista %}
+                <!-- {% for item in lista %}
+                    {{ item }}
+                    {% for key, value in item.items() %}
+                        {{ key }}-{{ value }}
+                    {% endfor %}
+                {% endfor %} -->
+                <!-- {% for item in lista %}
+                     {{ item['Policias']}} 
+                    {% for pitem in item['Policias'] %}
+                   {{ pitem['Baja'] }} 
                     <tr>
-                        <td>{{ item[0] }}</td>
-                        <td>{{ item[1] }}</td>
-                        <td>{{ item[2] }}</td>
-                        <td>{{ item[3] }}</td>
+                        <td>Ma&nacute;ana</td>
+                        <td>{{ pitem['Mañana'] }}</td>                        
                     </tr>
-                {% endfor %}
+                    <tr>
+                        <td>Tarde</td>
+                        <td>{{ pitem['Tarde'] }}</td>                        
+                    </tr>
+                    {% endfor %}
+                {% endfor %} -->
     
             </tbody>
     

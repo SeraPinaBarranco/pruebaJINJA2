@@ -1,7 +1,8 @@
 from cgi import test
 from jinja2 import Environment, FileSystemLoader #importaciones 
 
-import model.test as t
+from model import test as t
+
 
 variable = "HOLA MUNDO!!"
 
@@ -15,11 +16,14 @@ pers = t.personal()
 #Obtener el listado de plantilla
 v = t.situacion()
 
+#Obtener los policias segun turno AP, M, T...
+
+
+#print(v)
 
 #obtiene el template y con "render" le dan las variables
-rendered = env.get_template("mytemplate.html").render(personal=pers, lista=v, titulo="Estadillo")
+rendered = env.get_template("mytemplate.html").render(personal=pers,  titulo="Estadillo")
 
-#print(rendered)
 
 #Escribir el resultado a un archivo del sistema de archivos
 filename= "index.html"
