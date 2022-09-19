@@ -14,7 +14,8 @@ env = Environment(loader=fileloader) #variable que almacena el medio del templat
 pers = t.personal()
 
 #Obtener el listado de plantilla
-v = t.situacion()
+#v = t.situacion()
+v = t.dias_situacion()
 
 #Obtener los policias segun turno AP, M, T...
 

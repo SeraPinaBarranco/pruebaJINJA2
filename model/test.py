@@ -40,7 +40,8 @@ def situacion(fecha='13/09/2022'):
 
    
     #lista_situacion = dias_situacion(lista)
-    return dias_situacion(lista)
+    #return dias_situacion(lista)
+    return lista
 
 
 
@@ -122,13 +123,12 @@ def define_turno(turno="L"):
     
     lista_situacion = situacion()
     print(lista_situacion)
-            
-#situacion()
-#define_turno()
+
 
 
 #Devuelve el listado de personas AP, V, M, T... 
-def dias_situacion(listado = []):
+def dias_situacion():
+    listado = situacion()
     policias=[]
     npolicias= 0
     noficiales= 0
@@ -158,74 +158,76 @@ def dias_situacion(listado = []):
 
     oficiales={}   
 
-    #print(listado)
-    for i in listado:
-        plantilla =[]
-        if(i[0]== '1'):
+    print(listado[173])
+    plantilla =[]
+    for li in listado:
+        print(li)
+        if(li[0]== '1'):
             npolicias +=1
-            if(i[2] == 'M'):
+            if(li[2] == 'M'):
                 m+=1
                 fila_pol['Mañana'] = m
-            if(i[2] == 'N'):
+                print(m)
+            if(li[2] == 'N'):
                 n+=1
-                fila_pol['Noche'] = n
-            if(i[2] == 'M2'):
+                #fila_pol['Noche'] = n
+            if(li[2] == 'M2'):
                 m5+=1
-                fila_pol['Mañana5-2'] = m5
-            if(i[2] == 'T'):           
+                #fila_pol['Mañana5-2'] = m5
+            if(li[2] == 'T'):           
                 t+=1
-                fila_pol['Tarde'] = t
-            if(i[2] == 'CIF' or  i[2] == 'CBO' or  i[2] == 'CPA'):           
+                #fila_pol['Tarde'] = t
+            if(li[2] == 'CIF' or  li[2] == 'CBO' or  li[2] == 'CPA'):           
                 c+=1
-                fila_pol['Convenio'] = c        
-            if(i[2] == 'L'):           
+                #fila_pol['Convenio'] = c        
+            if(li[2] == 'L'):           
                 l+=1
-                fila_pol['Libre'] = l
-            if(i[2] == 'AP' or i[2] == 'AP-'):           
+                #fila_pol['Libre'] = l
+            if(li[2] == 'AP' or li[2] == 'AP-'):           
                 ap+=1
-                fila_pol['Asuntos propios'] = ap
-            if(i[2] == 'V'):           
+                #fila_pol['Asuntos propios'] = ap
+            if(li[2] == 'V'):           
                 v+=1
-                fila_pol['Vacaciones'] = v
-            if(i[2] == 'B'):           
+                #fila_pol['Vacaciones'] = v
+            if(li[2] == 'B'):           
                 b+=1
-                fila_pol['Baja'] = b
-            print(fila_pol)
-            plantilla.append(policias)
+                #fila_pol['Baja'] = b
+            
+            #plantilla.append(fila_pol)
 
-        if(i[0]== '2'):
+        if(li[0]== '2'):
             noficiales +=1
-            if(i[2] == 'M'):
+            if(li[2] == 'M'):
                 om+=1
                 oficiales['Mañana'] = om
-            if(i[2] == 'T'):           
+            if(li[2] == 'T'):           
                 ot+=1
                 oficiales['Tarde'] = ot
-            if(i[2] == 'N'):           
+            if(li[2] == 'N'):           
                 on+=1
                 oficiales['Noche'] = on
-            if(i[2] == 'M2'):
+            if(li[2] == 'M2'):
                 om5+=1
                 oficiales['Mañana5-2'] = om5
-            if(i[2] == 'CIF' or  i[2] == 'CBO' or  i[2] == 'CPA'):           
+            if(li[2] == 'CIF' or  li[2] == 'CBO' or  li[2] == 'CPA'):           
                 oc+=1
                 oficiales['Convenio'] = oc        
-            if(i[2] == 'L'):           
+            if(li[2] == 'L'):           
                 ol+=1
                 oficiales['Libre'] = ol
-            if(i[2] == 'AP' or i[2] == 'AP-'):           
+            if(li[2] == 'AP' or li[2] == 'AP-'):           
                 ofap+=1
                 oficiales['Asuntos propios'] = ofap
-            if(i[2] == 'V'):           
+            if(li[2] == 'V'):           
                 ov+=1
                 oficiales['Vacaciones'] = ov
-            if(i[2] == 'B'):           
+            if(li[2] == 'B'):           
                 ob+=1
                 oficiales['Baja'] = ob
             
         
-        
-            plantilla.append(oficiales)
+        #print(npolicias)
+        plantilla.append(oficiales)
         return plantilla
     
 
