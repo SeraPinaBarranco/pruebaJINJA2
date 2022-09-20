@@ -23,7 +23,7 @@ v = t.dias_situacion()
 #print(v)
 
 #obtiene el template y con "render" le dan las variables
-rendered = env.get_template("mytemplate.html").render(personal=pers,  titulo="Estadillo")
+rendered = env.get_template("mytemplate.html").render(personal=pers, listado_personal=v, titulo="Estadillo")
 
 
 #Escribir el resultado a un archivo del sistema de archivos

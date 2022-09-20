@@ -1,13 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta content="text/html" charset="UTF-8"> -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div>
+    <!-- Tablas de situación -->
+    <div class="content">
+        <div style="text-align: center;">SITUACI&Oacute;N PERSONAL</div>
+        <div class="fila">
+            <table border="1">
+               
+                <thead>
+                    <tr>
+                        <th>Situacion</th>
+                        <th>Cantidad</th>                  
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><th>POLICIAS</th></tr>
+                    {% for key, value in listado_personal['Policias'].items() %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+                    
+                    {% endfor %} 
+                </tbody>
+            </table>
+            <table border="1">
+                
+                <thead>
+                    <tr>
+                        <th>Situacion</th>
+                        <th>Cantidad</th>                  
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><th>OFICIALES</th></tr>
+                    {% for key, value in listado_personal['Oficial'].items() %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+                    
+                    {% endfor %}     
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tabla Plantilla -->
+    <div class="content">   
+        <div style="text-align: center;">PLANTILLA</div>  
         <table border="1" style="text-align:center">
             <caption>Personal</caption>
             <thead>
@@ -39,45 +87,23 @@
                         <td>{{ personal[4] }}</td>
                     </tr>                
             </tbody>        
-        </table>
+        </table>       
     </div>
+    
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        .content, table{
+            display: inline-block;   
+            vertical-align:top;         
+        }
+        .fila{
+            margin-right: 2vw;
+        }
+    </style>
 
-    <div>
-        <table border="1">
-            <caption>Policias</caption>
-            <thead>
-                <tr>
-                    <th>Situacion</th>
-                    <th>Cantidad</th>                  
-                </tr>
-            </thead>
-            <tbody>
-                <!-- {% for item in lista %}
-                    {{ item }}
-                    {% for key, value in item.items() %}
-                        {{ key }}-{{ value }}
-                    {% endfor %}
-                {% endfor %} -->
-                <!-- {% for item in lista %}
-                     {{ item['Policias']}} 
-                    {% for pitem in item['Policias'] %}
-                   {{ pitem['Baja'] }} 
-                    <tr>
-                        <td>Ma&nacute;ana</td>
-                        <td>{{ pitem['Mañana'] }}</td>                        
-                    </tr>
-                    <tr>
-                        <td>Tarde</td>
-                        <td>{{ pitem['Tarde'] }}</td>                        
-                    </tr>
-                    {% endfor %}
-                {% endfor %} -->
-    
-            </tbody>
-    
-            
-        </table>
-    </div>
-    
 </body>
 </html>
+

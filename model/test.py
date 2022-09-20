@@ -127,8 +127,29 @@ def define_turno(turno="L"):
 
 
 #Devuelve el listado de personas AP, V, M, T... 
-def dias_situacion():
-    listado = situacion()
+def dias_situacion(fecha='13/09/2022'):
+    listado = []
+    sql = '''   SELECT substr(PERSONAL."NUMERO_PROFESIONAL",6,1) AS PERSONAL_NUMERO_PROFESIONAL2,     
+                    to_char(CUADRANTE."FECHA",'DD/MM/YYYY') AS CUADRANTE_FECHA,     
+                    TURNOINCIDENCIAS."SIGLAS" AS TURNOINCIDENCIAS_SIGLAS     
+                FROM
+                    "EUROCOP"."PERSONAL" PERSONAL INNER JOIN "EUROCOP"."CUADRANTE" CUADRANTE ON PERSONAL."PERSONAL_ID" = CUADRANTE."PERSONAL_ID"
+                    INNER JOIN "EUROCOP"."CUADRANTES_TURNOSERVICIO" CUADRANTES_TURNOSERVICIO ON CUADRANTE."TURNOSERVICIO_ID" = CUADRANTES_TURNOSERVICIO."TURNOSERVICIO_ID"
+                    INNER JOIN "EUROCOP"."TURNOINCIDENCIAS" TURNOINCIDENCIAS ON CUADRANTES_TURNOSERVICIO."TURNOINCIDENCIAS_ID" = TURNOINCIDENCIAS."TURNOINCIDENCIAS_ID"
+                where 
+                    to_char(CUADRANTE."FECHA",'DD/MM/YYYY') = '{fe}'	 
+
+                ORDER BY PERSONAL.NUMERO_PROFESIONAL, CUADRANTE."FECHA"                
+            '''.format(fe=fecha)    
+
+    res = cursor.execute(sql) 
+
+    policias = []   
+    
+    for r in res: 
+        listado.append(r)
+    
+
     policias=[]
     npolicias= 0
     noficiales= 0
@@ -158,76 +179,97 @@ def dias_situacion():
 
     oficiales={}   
 
-    print(listado[173])
-    plantilla =[]
+    #print(len(listado))
+    plantilla = {'Policias':[]}
+        
+    
+    
     for li in listado:
-        print(li)
+        
+       
         if(li[0]== '1'):
             npolicias +=1
             if(li[2] == 'M'):
                 m+=1
-                fila_pol['Mañana'] = m
-                print(m)
+               
             if(li[2] == 'N'):
                 n+=1
-                #fila_pol['Noche'] = n
+              
             if(li[2] == 'M2'):
                 m5+=1
-                #fila_pol['Mañana5-2'] = m5
+              
             if(li[2] == 'T'):           
                 t+=1
-                #fila_pol['Tarde'] = t
+              
             if(li[2] == 'CIF' or  li[2] == 'CBO' or  li[2] == 'CPA'):           
                 c+=1
-                #fila_pol['Convenio'] = c        
+                     
             if(li[2] == 'L'):           
                 l+=1
-                #fila_pol['Libre'] = l
+             
             if(li[2] == 'AP' or li[2] == 'AP-'):           
                 ap+=1
-                #fila_pol['Asuntos propios'] = ap
+              
             if(li[2] == 'V'):           
                 v+=1
-                #fila_pol['Vacaciones'] = v
+               
             if(li[2] == 'B'):           
                 b+=1
-                #fila_pol['Baja'] = b
-            
-            #plantilla.append(fila_pol)
 
         if(li[0]== '2'):
             noficiales +=1
             if(li[2] == 'M'):
                 om+=1
-                oficiales['Mañana'] = om
+                
             if(li[2] == 'T'):           
                 ot+=1
-                oficiales['Tarde'] = ot
+                
             if(li[2] == 'N'):           
                 on+=1
-                oficiales['Noche'] = on
+                
             if(li[2] == 'M2'):
                 om5+=1
-                oficiales['Mañana5-2'] = om5
+                
             if(li[2] == 'CIF' or  li[2] == 'CBO' or  li[2] == 'CPA'):           
                 oc+=1
-                oficiales['Convenio'] = oc        
+                   
             if(li[2] == 'L'):           
                 ol+=1
-                oficiales['Libre'] = ol
+                
             if(li[2] == 'AP' or li[2] == 'AP-'):           
                 ofap+=1
-                oficiales['Asuntos propios'] = ofap
+                
             if(li[2] == 'V'):           
                 ov+=1
-                oficiales['Vacaciones'] = ov
+                
             if(li[2] == 'B'):           
                 ob+=1
-                oficiales['Baja'] = ob
-            
-        
-        #print(npolicias)
-        plantilla.append(oficiales)
-        return plantilla
+
+    fila_pol['Manana'] = m
+    fila_pol['Noche'] = n
+    fila_pol['Tarde'] = t
+    fila_pol['Manana5-2'] = m5
+    fila_pol['Convenio'] = c 
+    fila_pol['Libre'] = l
+    fila_pol['Asuntos propios'] = ap
+    fila_pol['Vacaciones'] = v
+    fila_pol['Baja'] = b
+
+    plantilla['Policias'] = fila_pol
+
+    oficiales['Manana'] = om
+    oficiales['Noche'] = on
+    oficiales['Tarde'] = ot
+    oficiales['Manana5-2'] = om5
+    oficiales['Convenio'] = oc     
+    oficiales['Libre'] = ol
+    oficiales['Asuntos propios'] = ofap
+    oficiales['Vacaciones'] = ov
+    oficiales['Baja'] = ob
+
+    plantilla['Oficial'] = oficiales
+
+    print(plantilla['Oficial'])
+    return plantilla
     
 
