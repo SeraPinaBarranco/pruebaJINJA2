@@ -13,7 +13,7 @@ conexion = oracledb.connect(user=un, password=pw, dsn=cs)
 
 #sql = """select sysdate from dual"""
 
-cursor = conexion.cursor()
+
 
 
 def situacion(fecha='13/09/2022'):
@@ -46,6 +46,7 @@ def situacion(fecha='13/09/2022'):
 
 
 def personal():
+    cursor = conexion.cursor()
     lista = []
     sql = """SELECT 
             	CASE  
@@ -120,7 +121,7 @@ def personal():
     return lista
 
 def define_turno(turno="L"):
-    
+    cursor = conexion.cursor()
     lista_situacion = situacion()
     print(lista_situacion)
 
@@ -128,6 +129,7 @@ def define_turno(turno="L"):
 
 #Devuelve el listado de personas AP, V, M, T... 
 def dias_situacion(fecha='13/09/2022'):
+    cursor = conexion.cursor()
     listado = []
     sql = '''   SELECT substr(PERSONAL."NUMERO_PROFESIONAL",6,1) AS PERSONAL_NUMERO_PROFESIONAL2,     
                     to_char(CUADRANTE."FECHA",'DD/MM/YYYY') AS CUADRANTE_FECHA,     
@@ -178,15 +180,10 @@ def dias_situacion(fecha='13/09/2022'):
     fila_pol={}
 
     oficiales={}   
-
-    #print(len(listado))
-    plantilla = {'Policias':[]}
-        
     
+    plantilla = {'Policias':[]}    
     
-    for li in listado:
-        
-       
+    for li in listado:    
         if(li[0]== '1'):
             npolicias +=1
             if(li[2] == 'M'):
@@ -268,8 +265,242 @@ def dias_situacion(fecha='13/09/2022'):
     oficiales['Baja'] = ob
 
     plantilla['Oficial'] = oficiales
-
-    print(plantilla['Oficial'])
+    
     return plantilla
     
 
+#Muestra los agentes de baja con su fecha de baja
+def bajas():
+    cursor = conexion.cursor()
+    lista = []
+    sql="""
+            SELECT  p.NUMERO_PROFESIONAL, to_char(cp.fechadesde,'DD/MM/YYYY') AS fechadesde, to_char(cp.FECHAHASTA,'DD/MM/YYYY') AS FECHAHASTA, cp.NUMERODIAS FROM BAJAPERSONAL cp
+            LEFT OUTER JOIN PERSONAL p ON p.PERSONAL_ID = cp.PERSONAL_ID
+            WHERE cp.FECHAHASTA IS NULL ORDER BY  p.NUMERO_PROFESIONAL  
+        """
+    res = cursor.execute(sql)       
+    
+    for r in res:         
+        lista.append(r)
+    return lista
+
+#DENUNCIAS AYTO
+def denuncias_ayto(fecha = '01/01/2022'):
+    cursor = conexion.cursor()
+    lista = []
+    sql="""select
+                to_char(Denuncia.fechaGrabacion,
+                'DD/MM/YYYY') as fechaGrabacion,
+                count(*) as fechaDenuncia 
+            from
+                Denuncia Denuncia 
+            where
+            (
+                Denuncia.fechaGrabacion between to_date('{} 00:00:00', 'DD/MM/YYYY HH24:MI:SS') 
+                and to_date('{} 23:59:59', 'DD/MM/YYYY HH24:MI:SS') 
+            )
+            group by
+                to_char(Denuncia.fechaGrabacion,'DD/MM/YYYY')
+        """.format(fecha,fecha)
+    res = cursor.execute(sql)     
+    
+    for r in res:        
+        lista.append(r)
+    if(len(lista)==0):
+        f = fecha,0
+        lista.append(f)        
+        return lista
+    return lista  
+
+#DENUNCIAS JPT
+def denuncias_JPT(fecha='01/01/2022'):
+    cursor = conexion.cursor()
+    lista = []
+    sql="""
+            select
+                    to_char(Denuncia_DGT.fechaGrabacion,
+                    'DD/MM/YYYY') as fechaGrabacion,
+                    count(*) as fechaGrabacion_1 
+                from
+                    Denuncia_DGT Denuncia_DGT 
+                where
+                (
+                    Denuncia_DGT.fechaGrabacion between to_date('{} 00:00:00', 'DD/MM/YYYY HH24:MI:SS') and to_date('{} 23:59:59', 'DD/MM/YYYY HH24:MI:SS') 
+                )
+                group by
+                    to_char(Denuncia_DGT.fechaGrabacion,
+                    'DD/MM/YYYY')
+        """.format(fecha,fecha)
+    res = cursor.execute(sql)  
+
+    
+    for r in res:
+        lista.append(r)
+    if(len(lista)==0):
+        f = fecha,0
+        lista.append(f)        
+        return lista
+    return lista  
+   
+    
+#DENUNCIAS CAM
+def denuncias_CAM(fecha='01/01/2022'):
+    cursor = conexion.cursor()
+    lista = []
+    sql="""
+            select
+                    to_char(Denuncia_DGT.fechaGrabacion,
+                    'DD/MM/YYYY') as fechaGrabacion,
+                    count(*) as fechaGrabacion_1 
+                from
+                    Denuncia_DGT Denuncia_DGT 
+                where
+                (
+                    Denuncia_DGT.fechaGrabacion between to_date('{} 00:00:00', 'DD/MM/YYYY HH24:MI:SS') and to_date('{} 23:59:59', 'DD/MM/YYYY HH24:MI:SS') 
+                    AND length(Denuncia_DGT.SERIEBOLETIN) > 2
+                )
+                group by
+                    to_char(Denuncia_DGT.fechaGrabacion,
+                    'DD/MM/YYYY')
+        """.format(fecha,fecha)
+
+    res = cursor.execute(sql)
+    for r in res:                
+        lista.append(r)
+    if(len(lista)==0):
+        f = fecha,0
+        lista.append(f)        
+        return lista
+    return lista     
+    
+#DENUNCIAS RADAR
+def radar(fecha='01/01/2022'):
+    cursor = conexion.cursor()
+    lista = []
+    sql="""
+            select
+                to_char(Denuncia.fechaGrabacion,
+                'DD/MM/YYYY') as fechaGrabacion,       
+                count(*) as fechaGrabacion_1 
+            from
+                Denuncia Denuncia 
+            where
+            (
+                Denuncia.fechaGrabacion between to_date('{} 00:00:00', 'DD/MM/YYYY HH24:MI:SS') and to_date('{} 23:59:59', 'DD/MM/YYYY HH24:MI:SS')
+                AND Denuncia.NUMEROBOLETIN LIKE '301%'
+            )
+            group by
+                to_char(Denuncia.fechaGrabacion,
+                'DD/MM/YYYY')
+        """.format(fecha,fecha)
+
+    res = cursor.execute(sql)
+    for r in res:                
+        lista.append(r)
+    if(len(lista)==0):
+        f = fecha,0
+        lista.append(f)        
+        return lista
+    return lista 
+        
+#ENTRADAS DEPOSITO
+def deposito(fecha='01/01/2022'):    
+    cursor = conexion.cursor()
+    lista = []
+    sql="""
+            select
+                to_char(VehiculoDeposito.fechaEntrada,
+                'DD/MM/YYYY') as fechaEntrada,
+                count(*) as fechaEntrada_1 
+            from
+                VehiculoDeposito VehiculoDeposito 
+            where
+            (
+                VehiculoDeposito.fechaEntrada between to_date('21/09/2022 00:00:00', 'DD/MM/YYYY HH24:MI:SS') and to_date('21/09/2022 23:59:59', 'DD/MM/YYYY HH24:MI:SS') 
+            )
+            group by
+                to_char(VehiculoDeposito.fechaEntrada,
+                'DD/MM/YYYY')
+        """.format(fecha,fecha)
+
+    res = cursor.execute(sql)
+    for r in res:                
+        lista.append(r)
+    if(len(lista)==0):
+        f = fecha,0
+        lista.append(f)        
+        return lista
+    return lista 
+
+#ENTRADAS DEPOSITO TIPO VEHICULO
+def tipo_vehiculo_deposito(fecha='01/01/2022'):    
+    cursor = conexion.cursor()
+    lista = []
+    sql="""
+            select
+                    to_char(VehiculoDeposito.fechaEntrada,
+                    'DD/MM/YYYY') as fechaEntrada,
+                    count(*) as fechaEntrada_1,
+                    vehiculovi2_.tipoVehiculo as tipoVehiculo 
+                from
+                    VehiculoDeposito VehiculoDeposito 
+                left outer join
+                    Vehiculo vehiculo1_ 
+                        on VehiculoDeposito.vehiculo_id=vehiculo1_.vehiculo_id 
+                left outer join
+                    VehiculoView vehiculovi2_ 
+                        on vehiculo1_.vehiculo_id=vehiculovi2_.vehiculo_id 
+            where
+            (
+                VehiculoDeposito.fechaEntrada between to_date('{} 00:00:00', 'DD/MM/YYYY HH24:MI:SS') and to_date('{} 23:59:59', 'DD/MM/YYYY HH24:MI:SS') 
+            )
+            group by
+                to_char(VehiculoDeposito.fechaEntrada,
+                'DD/MM/YYYY'),vehiculovi2_.tipoVehiculo
+        """.format(fecha,fecha)
+
+    res = cursor.execute(sql)
+    for r in res:                
+        lista.append(r)
+    if(len(lista)==0):
+        f = fecha,0,""
+        lista.append(f)        
+        return lista
+    return lista 
+
+#DATOS REGISTRO DE ENTRADA
+def registro_entrada(fecha='01/01/2022'):    
+    cursor = conexion.cursor()
+    lista = []
+    sql="""
+            select
+                    to_char(RegistroEntrada.fecharegistro,
+                    'DD/MM/YYYY') as fecharegistro,
+                    substr( hechoview2_.descripcion,4) as descripcion,
+                    count(*) as descripcion_1 
+                from
+                    RegistroEntrada RegistroEntrada 
+                left outer join
+                    Hecho hecho1_ 
+                        on RegistroEntrada.hecho_id=hecho1_.id 
+                left outer join
+                    HechoView hechoview2_ 
+                        on hecho1_.id=hechoview2_.id 
+                where
+                (
+                    RegistroEntrada.fecharegistro between to_date('{} 00:00:00', 'DD/MM/YYYY HH24:MI:SS') and to_date('{} 23:59:59', 'DD/MM/YYYY HH24:MI:SS') 
+                )
+                group by
+                    to_char(RegistroEntrada.fecharegistro,
+                    'DD/MM/YYYY') ,
+                    hechoview2_.descripcion ORDER BY count(*)
+        """.format(fecha,fecha)
+
+    res = cursor.execute(sql)
+    for r in res:                     
+        lista.append(r)
+    if(len(lista)==0):
+        f = fecha,"",0
+        lista.append(f)        
+        return lista
+    return lista 
