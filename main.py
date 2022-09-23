@@ -63,7 +63,9 @@ rendered = env.get_template("mytemplate.html").render(personal=pers, listado_per
 filename= "index.html"
 
 #crea el archivo de salida
-#with open(f"E:/{filename}","w") as f:
-with open(f"./site/{filename}","w") as f:
+#with open(f"./site/{filename}","w") as f:
+with open(f"\\\datos\\policia\\OficinaTecnica\\{filename}","w") as f:
     f.write(rendered)
+    #f.write(f"D:\\{filename}","w")
+    print(os.getcwd())
 
